@@ -1,0 +1,8 @@
+application:
+  name: order
+  server:
+    port: 8080
+    timeout: 100
+
+mysql:
+  host: "root:@tcp(localhost:3306)/user_database?charset=utf8mb4&parseTime=True&loc=Local"

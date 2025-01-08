@@ -7,8 +7,8 @@ import (
 type (
 	User struct {
 		Id    string
-		email string
-		idade int
+		Email string
+		Idade int
 	}
 	Opt func(*User)
 )
@@ -28,21 +28,21 @@ func NewUser(opts ...Opt) *User {
 func WithEmail(email string) Opt {
 
 	return func(u *User) {
-		u.email = email
+		u.Email = email
 	}
 }
 
 func WithIdade(idade int) Opt {
 
 	return func(u *User) {
-		u.idade = idade
+		u.Idade = idade
 	}
 }
 
 func (c *User) validarIdade() error {
 
-	if c.idade < 0 {
-		return erros.NewChangeIdadeErr(c.idade)
+	if c.Idade < 0 {
+		return erros.NewChangeIdadeErr(c.Idade)
 	}
 	return nil
 }
