@@ -57,8 +57,8 @@ func (c *configuration) WithDB() *configuration {
 
 func (c *configuration) WithRouter() *configuration {
 	su := controller.NewSaveController(usecase.NewSaveUser(c.db))
-
-	c.router = router.NewGinEngine(gin.Default(), su)
+	fu := controller.NewFindByUserIdController(usecase.NewFindByUserId(c.db))
+	c.router = router.NewGinEngine(gin.Default(), su, fu)
 	return c
 }
 

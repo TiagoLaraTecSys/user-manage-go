@@ -11,6 +11,8 @@ func HandleError(w http.ResponseWriter, err error) {
 	var status int
 
 	switch {
+	case errors.As(err, &erros.InvalidRequestErr{}):
+		status = http.StatusBadRequest
 	case errors.As(err, &erros.NotFoundErr{}):
 		status = http.StatusNotFound
 	default:
