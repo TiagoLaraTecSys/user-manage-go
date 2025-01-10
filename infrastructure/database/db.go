@@ -35,7 +35,19 @@ func (s *SQLConnection) Add(ctx *context.Context, user *domain.User) (domain.Use
 	if err != nil {
 		return domain.User{}, err
 	}
-	result := s.db.Create(u)
+
+	var notUnique domain.User
+	result := s.db.Where("email=?", u.Email).Find(&notUnique)
+
+	if result.Error != nil {
+		return domain.User{}, result.Error
+	}
+
+	if notUnique.Email != "" {
+		return domain.User{}, erros.NewNotUniqueError("email", u.Email)
+	}
+
+	result = s.db.Create(u)
 
 	if result.Error != nil {
 		return domain.User{}, result.Error
@@ -74,12 +86,13 @@ func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput)
 	if i.Page != 0 {
 		offset = (i.Page - 1) * limit
 	}
-
-	result := s.db.Offset(offset).Limit(limit).Find(&users)
 	var totalItems int64
 	s.db.Find(&users).Count(&totalItems)
-	logger.Info("Total de itens %d", totalItems)
+
+	result := s.db.Offset(offset).Limit(limit).Find(&users)
+
 	totalPages := (int(totalItems) + limit - 1) / limit
+
 	if result.Error != nil {
 		return domain.Data{}, result.Error
 	}
@@ -89,7 +102,13 @@ func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput)
 		return domain.Data{}, err
 	}
 	p := &domain.Pagination{Limit: limit, Page: i.Page, TotalPages: totalPages}
-	d := domain.Data{Users: uList, Page: *p}
+
+	var d domain.Data
+	if len(uList) == 0 {
+		d = domain.Data{Users: []domain.User{}, Page: *p}
+	} else {
+		d = domain.Data{Users: uList, Page: *p}
+	}
 
 	return d, nil
 }
