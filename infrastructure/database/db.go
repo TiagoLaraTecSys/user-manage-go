@@ -62,7 +62,7 @@ func (s *SQLConnection) GetById(ctx *context.Context, Id string) (domain.User, e
 	return *user.ToDomain(), nil
 }
 
-func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput) ([]domain.User, error) {
+func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput) (domain.Data, error) {
 	var users []entity.User
 
 	limit := -1
@@ -76,18 +76,22 @@ func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput)
 	}
 
 	result := s.db.Offset(offset).Limit(limit).Find(&users)
-
+	var totalItems int64
+	s.db.Find(&users).Count(&totalItems)
+	logger.Info("Total de itens %d", totalItems)
+	totalPages := (int(totalItems) + limit - 1) / limit
 	if result.Error != nil {
-		logger.Info("AAAAAAA")
-		return []domain.User{}, result.Error
+		return domain.Data{}, result.Error
 	}
 
 	uList, err := entityToUserList(&users)
 	if err != nil {
-		return []domain.User{}, err
+		return domain.Data{}, err
 	}
+	p := &domain.Pagination{Limit: limit, Page: i.Page, TotalPages: totalPages}
+	d := domain.Data{Users: uList, Page: *p}
 
-	return uList, nil
+	return d, nil
 }
 
 func entityToUserList(list *[]entity.User) ([]domain.User, error) {

@@ -9,7 +9,7 @@ import (
 
 type (
 	FindAllUsers interface {
-		Execute(ctx *context.Context, i *input.PaginationInput) (*[]domain.User, error)
+		Execute(ctx *context.Context, i *input.PaginationInput) (*domain.Data, error)
 	}
 	findAllUsers struct {
 		repo repository.UserRepository
@@ -20,12 +20,12 @@ func NewFindAllUsers(repo repository.UserRepository) FindAllUsers {
 	return &findAllUsers{repo: repo}
 }
 
-func (uc *findAllUsers) Execute(ctx *context.Context, i *input.PaginationInput) (*[]domain.User, error) {
+func (uc *findAllUsers) Execute(ctx *context.Context, i *input.PaginationInput) (*domain.Data, error) {
 
 	out, err := uc.repo.GetUsers(ctx, i)
 
 	if err != nil {
-		return &[]domain.User{}, err
+		return &domain.Data{}, err
 	}
 
 	return &out, nil

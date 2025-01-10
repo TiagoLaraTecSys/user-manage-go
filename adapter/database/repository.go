@@ -37,7 +37,7 @@ func (r *UserRepository) GetById(ctx *context.Context, id string) (domain.User, 
 	return u, err
 }
 
-func (r *UserRepository) GetUsers(ctx *context.Context, i *input.PaginationInput) ([]domain.User, error) {
+func (r *UserRepository) GetUsers(ctx *context.Context, i *input.PaginationInput) (domain.Data, error) {
 
 	u, err := r.db.GetUsers(ctx, i)
 	if err != nil {

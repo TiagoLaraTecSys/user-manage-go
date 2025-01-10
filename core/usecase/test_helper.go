@@ -29,7 +29,7 @@ func (d *databaseMock) GetById(ctx *context.Context, uId string) (domain.User, e
 	return args.Get(0).(domain.User), args.Error(1)
 }
 
-func (d *databaseMock) GetUsers(ctx *context.Context, i *input.PaginationInput) ([]domain.User, error) {
+func (d *databaseMock) GetUsers(ctx *context.Context, i *input.PaginationInput) (domain.Data, error) {
 	args := d.Called()
-	return args.Get(0).([]domain.User), args.Error(1)
+	return args.Get(0).(domain.Data), args.Error(1)
 }
