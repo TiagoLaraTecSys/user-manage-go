@@ -67,6 +67,7 @@ func (s *SQLConnection) GetUsers(ctx *context.Context) ([]domain.User, error) {
 	result := s.db.Find(&users)
 
 	if result.Error != nil {
+		logger.Info("AAAAAAA")
 		return []domain.User{}, result.Error
 	}
 

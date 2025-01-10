@@ -1,0 +1,30 @@
+package controller
+
+import (
+	"net/http"
+	"projeto-final/adapter/api/handler"
+	"projeto-final/adapter/api/response"
+	"projeto-final/core/usecase"
+)
+
+type FindAllUsersController struct {
+	uc usecase.FindAllUsers
+}
+
+func NewFindAllUsersController(uc usecase.FindAllUsers) *FindAllUsersController {
+	return &FindAllUsersController{uc: uc}
+}
+
+func (c *FindAllUsersController) Execute(w http.ResponseWriter, r http.Request) {
+
+	ctx := r.Context()
+
+	users, err := c.uc.Execute(&ctx)
+
+	if err != nil {
+		handler.HandleError(w, err)
+		return
+	}
+
+	response.NewSucess(http.StatusOK, users).Send(w)
+}
