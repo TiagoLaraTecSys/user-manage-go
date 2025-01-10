@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"projeto-final/core/domain"
+	"projeto-final/core/usecase/input"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,16 +29,19 @@ func TestFindAllUsers(t *testing.T) {
 		name     string
 		expected []domain.User
 		err      error
+		input    *input.PaginationInput
 	}{
 		{
 			name:     "Sucesso",
 			expected: resDef,
 			err:      nil,
+			input:    &input.PaginationInput{Page: 1, Limit: 1},
 		},
 		{
 			name:     "Error",
 			expected: []domain.User{},
 			err:      databaseErr,
+			input:    &input.PaginationInput{Page: 1, Limit: 1},
 		},
 	}
 
@@ -49,7 +53,7 @@ func TestFindAllUsers(t *testing.T) {
 			r.On("GetUsers", mock.Anything).Return(sc.expected, sc.err)
 
 			ctx := context.TODO()
-			out, err := uc.Execute(&ctx)
+			out, err := uc.Execute(&ctx, sc.input)
 
 			assert.Equal(t, sc.expected, *out)
 			assert.Equal(t, sc.err, err)

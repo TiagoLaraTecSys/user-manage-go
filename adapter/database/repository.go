@@ -4,6 +4,7 @@ import (
 	"context"
 	"projeto-final/core/domain"
 	"projeto-final/core/repository"
+	"projeto-final/core/usecase/input"
 )
 
 type UserRepository struct {
@@ -36,9 +37,9 @@ func (r *UserRepository) GetById(ctx *context.Context, id string) (domain.User, 
 	return u, err
 }
 
-func (r *UserRepository) GetUsers(ctx *context.Context) ([]domain.User, error) {
+func (r *UserRepository) GetUsers(ctx *context.Context, i *input.PaginationInput) ([]domain.User, error) {
 
-	u, err := r.db.GetUsers(ctx)
+	u, err := r.db.GetUsers(ctx, i)
 	if err != nil {
 		return u, err
 	}

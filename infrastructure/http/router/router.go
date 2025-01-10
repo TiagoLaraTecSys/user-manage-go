@@ -46,6 +46,10 @@ func (e *ginEngine) getByUserId() gin.HandlerFunc {
 
 func (e *ginEngine) getAllUsers() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		query := ctx.Request.URL.Query()
+		query.Add("Page", ctx.Param("Page"))
+		query.Add("Limit", ctx.Param("Limit"))
+		ctx.Request.URL.RawQuery = query.Encode()
 		e.allU.Execute(ctx.Writer, *ctx.Request)
 	}
 }

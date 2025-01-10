@@ -5,6 +5,7 @@ import (
 	"projeto-final/adapter/database"
 	"projeto-final/core/domain"
 	"projeto-final/core/erros"
+	"projeto-final/core/usecase/input"
 	"projeto-final/infrastructure/database/entity"
 	"projeto-final/infrastructure/logger"
 
@@ -61,10 +62,20 @@ func (s *SQLConnection) GetById(ctx *context.Context, Id string) (domain.User, e
 	return *user.ToDomain(), nil
 }
 
-func (s *SQLConnection) GetUsers(ctx *context.Context) ([]domain.User, error) {
+func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput) ([]domain.User, error) {
 	var users []entity.User
 
-	result := s.db.Find(&users)
+	limit := -1
+	offset := -1
+	if i.Limit != 0 {
+		limit = i.Limit
+	}
+
+	if i.Page != 0 {
+		offset = (i.Page - 1) * limit
+	}
+
+	result := s.db.Offset(offset).Limit(limit).Find(&users)
 
 	if result.Error != nil {
 		logger.Info("AAAAAAA")
