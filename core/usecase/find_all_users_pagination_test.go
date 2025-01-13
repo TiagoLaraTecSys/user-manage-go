@@ -16,12 +16,12 @@ func TestFindAllUsers(t *testing.T) {
 		{
 			Email: "teste1@gmail.com",
 			Idade: 26,
-			Id:    "1",
+			Id:    1,
 		},
 		{
 			Email: "teste2@gmail.com",
 			Idade: 26,
-			Id:    "2",
+			Id:    2,
 		},
 	}
 

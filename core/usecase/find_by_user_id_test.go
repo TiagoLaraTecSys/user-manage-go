@@ -15,7 +15,7 @@ func TestFindByIdExecute(t *testing.T) {
 	respDef := domain.User{
 		Email: "teste@gmail.com",
 		Idade: 26,
-		Id:    "1",
+		Id:    1,
 	}
 
 	tt := []struct {

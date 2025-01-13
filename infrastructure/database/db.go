@@ -66,7 +66,7 @@ func (s *SQLConnection) GetById(ctx *context.Context, Id string) (domain.User, e
 		return domain.User{}, result.Error
 	}
 
-	if user.Id == "" {
+	if user.Id == 0 {
 		return domain.User{}, erros.NewNotFoundErr("User", Id)
 	}
 	logger.Info("User", user)

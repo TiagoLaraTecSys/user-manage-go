@@ -19,7 +19,7 @@ func TestSaveUser(t *testing.T) {
 	}
 
 	outPadrao := domain.User{
-		Id:    "1",
+		Id:    1,
 		Email: "laratecsys@gmail.com",
 		Idade: 26,
 	}

@@ -22,10 +22,15 @@ func NewSaveUser(repo repository.UserRepository) SaveUser {
 
 func (s *saveUser) Execute(ctx *context.Context, u *input.SaveUser) (*domain.User, error) {
 
-	user := domain.NewUser(
+	user, err := domain.NewUser(
 		domain.WithEmail(u.Email),
 		domain.WithIdade(u.Idade),
+		domain.WithName(u.Name),
 	)
+
+	if err != nil {
+		return &domain.User{}, err
+	}
 
 	out, err := s.repo.Add(ctx, user)
 

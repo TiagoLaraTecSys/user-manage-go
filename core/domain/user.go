@@ -6,23 +6,30 @@ import (
 
 type (
 	User struct {
-		Id    string
+		Id    int
 		Email string
+		Name  string
 		Idade int
 	}
 	Opt func(*User)
 )
 
-func NewUser(opts ...Opt) *User {
+func NewUser(opts ...Opt) (*User, error) {
 	u := &User{}
 
 	for _, opt := range opts {
 		opt(u)
 	}
 
-	u.validarIdade()
+	err := u.validarIdade()
 
-	return u
+	return u, err
+}
+
+func WithName(name string) Opt {
+	return func(u *User) {
+		u.Name = name
+	}
 }
 
 func WithEmail(email string) Opt {

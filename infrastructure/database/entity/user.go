@@ -2,21 +2,13 @@ package entity
 
 import (
 	"projeto-final/core/domain"
-
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 type User struct {
-	Id    string `gorm:"type:char(36);primaryKey"`
-	Email string `gorm:"type:char(80);not null; unique"`
+	Id    int    `gorm:"type:int;autoIncrement;primaryKey"`
+	Email string `gorm:"type:varchar(100);not null; unique"`
+	Name  string `gorm:"type:varchar(100)"`
 	Idade int    `gorm:"type:int;not null"`
-}
-
-func (p *User) BeforeCreate(tx *gorm.DB) error {
-	uuid := uuid.New().String()
-	p.Id = uuid
-	return nil
 }
 
 func NewUserEntity(u *domain.User) (*User, error) {

@@ -40,7 +40,7 @@ func TestFindByUserIdControllerTest(t *testing.T) {
 			input: "/v1/usuario?userId=1",
 			mockUseCaseSetup: func() {
 				uc.On("Execute", mock.Anything, mock.Anything).Return(&domain.User{
-					Id:    "1",
+					Id:    1,
 					Email: "teste@gmail.com",
 					Idade: 26,
 				}, nil).Once()

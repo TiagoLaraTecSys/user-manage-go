@@ -24,7 +24,7 @@ func TestSaveController(t *testing.T) {
 	}
 
 	outputPadrao := domain.User{
-		Id:    "1",
+		Id:    1,
 		Email: "teste@gmail.com",
 		Idade: 26,
 	}
