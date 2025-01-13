@@ -46,3 +46,14 @@ func (r *UserRepository) GetUsers(ctx *context.Context, i *input.PaginationInput
 
 	return u, err
 }
+
+func (r *UserRepository) DeleteUser(ctx *context.Context, Id int) error {
+
+	err := r.db.DeleteUser(ctx, Id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

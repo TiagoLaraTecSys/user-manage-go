@@ -33,3 +33,8 @@ func (d *databaseMock) GetUsers(ctx *context.Context, i *input.PaginationInput) 
 	args := d.Called()
 	return args.Get(0).(domain.Data), args.Error(1)
 }
+
+func (d *databaseMock) DeleteUser(ctx *context.Context, Id int) error {
+	args := d.Called()
+	return args.Error(1)
+}

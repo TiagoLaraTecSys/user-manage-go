@@ -113,6 +113,18 @@ func (s *SQLConnection) GetUsers(ctx *context.Context, i *input.PaginationInput)
 	return d, nil
 }
 
+func (s *SQLConnection) DeleteUser(ctx *context.Context, Id int) error {
+	var user domain.User
+
+	result := s.db.Where("id=?", Id).Delete(&user)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
 func entityToUserList(list *[]entity.User) ([]domain.User, error) {
 	var domainList []domain.User
 

@@ -17,6 +17,7 @@ type (
 		saveU  *controller.SaveController
 		findU  *controller.FindByUserIdController
 		allU   *controller.FindAllUsersController
+		delU   *controller.DeleteUserController
 	}
 )
 
@@ -25,14 +26,26 @@ func NewGinEngine(
 	saveU *controller.SaveController,
 	findU *controller.FindByUserIdController,
 	allU *controller.FindAllUsersController,
+	delU *controller.DeleteUserController,
 ) *ginEngine {
-	return &ginEngine{router: router, saveU: saveU, findU: findU, allU: allU}
+	return &ginEngine{router: router, saveU: saveU, findU: findU, allU: allU, delU: delU}
 }
 
 func (e *ginEngine) SetAppHandlers() {
 	e.router.GET("/v1/user", e.getByUserId())
 	e.router.GET("/v1/users", e.getAllUsers())
 	e.router.POST("/v1/user", e.save())
+	e.router.DELETE("/v1/user/delete", e.deleteUser())
+
+}
+
+func (e *ginEngine) deleteUser() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		query := ctx.Request.URL.Query()
+		query.Add("userId", ctx.Param("userId"))
+		ctx.Request.URL.RawQuery = query.Encode()
+		e.delU.Execute(ctx.Writer, *ctx.Request)
+	}
 }
 
 func (e *ginEngine) getByUserId() gin.HandlerFunc {
