@@ -27,7 +27,16 @@ func (r *UserRepository) Add(ctx *context.Context, user *domain.User) (domain.Us
 	return u, err
 }
 
-func (r *UserRepository) GetById(ctx *context.Context, id string) (domain.User, error) {
+func (r *UserRepository) Update(ctx *context.Context, user *domain.User) (domain.User, error) {
+
+	u, err := r.db.Update(ctx, user)
+	if err != nil {
+		return u, err
+	}
+	return u, err
+}
+
+func (r *UserRepository) GetById(ctx *context.Context, id int) (domain.User, error) {
 
 	u, err := r.db.GetById(ctx, id)
 	if err != nil {

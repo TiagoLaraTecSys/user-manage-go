@@ -3,6 +3,7 @@ package response
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 )
 
 type Error struct {
@@ -11,7 +12,7 @@ type Error struct {
 }
 
 func NewError(status int, err error) *Error {
-	return &Error{StatusCode: status, Erros: []string{err.Error()}}
+	return &Error{StatusCode: status, Erros: strings.Split(err.Error(), "\n")}
 }
 
 func (e *Error) Send(w http.ResponseWriter) {

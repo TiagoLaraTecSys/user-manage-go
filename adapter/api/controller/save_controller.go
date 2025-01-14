@@ -35,6 +35,12 @@ func (c *SaveController) Execute(w http.ResponseWriter, r http.Request) {
 		return
 	}
 
+	requestErro := i.ValidateRequestBody()
+	if requestErro != nil {
+		handler.HandleError(w, requestErro)
+		return
+	}
+
 	u, err := c.uc.Execute(&ctx, &i)
 	if err != nil {
 		handler.HandleError(w, err)

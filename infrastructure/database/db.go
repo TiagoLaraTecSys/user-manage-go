@@ -8,6 +8,7 @@ import (
 	"projeto-final/core/usecase/input"
 	"projeto-final/infrastructure/database/entity"
 	"projeto-final/infrastructure/logger"
+	"strconv"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -43,11 +44,11 @@ func (s *SQLConnection) Add(ctx *context.Context, user *domain.User) (domain.Use
 		return domain.User{}, result.Error
 	}
 
-	if notUnique.Email != "" {
+	if notUnique.Email != "" && notUnique.Id != u.Id {
 		return domain.User{}, erros.NewNotUniqueError("email", u.Email)
 	}
 
-	result = s.db.Create(u)
+	result = s.db.Save(u)
 
 	if result.Error != nil {
 		return domain.User{}, result.Error
@@ -56,7 +57,12 @@ func (s *SQLConnection) Add(ctx *context.Context, user *domain.User) (domain.Use
 	return *user, nil
 }
 
-func (s *SQLConnection) GetById(ctx *context.Context, Id string) (domain.User, error) {
+func (s *SQLConnection) Update(ctx *context.Context, user *domain.User) (domain.User, error) {
+
+	return domain.User{}, nil
+}
+
+func (s *SQLConnection) GetById(ctx *context.Context, Id int) (domain.User, error) {
 	var user entity.User
 	result := s.db.Where("id=?", Id).Find(&user)
 
@@ -67,7 +73,7 @@ func (s *SQLConnection) GetById(ctx *context.Context, Id string) (domain.User, e
 	}
 
 	if user.Id == 0 {
-		return domain.User{}, erros.NewNotFoundErr("User", Id)
+		return domain.User{}, erros.NewNotFoundErr("User", strconv.Itoa(Id))
 	}
 	logger.Info("User", user)
 

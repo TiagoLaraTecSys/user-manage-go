@@ -60,7 +60,8 @@ func (c *configuration) WithRouter() *configuration {
 	fu := controller.NewFindByUserIdController(usecase.NewFindByUserId(c.db))
 	au := controller.NewFindAllUsersController(usecase.NewFindAllUsers(c.db))
 	du := controller.NewDeleteUserController(usecase.NewDeleteUser(c.db))
-	c.router = router.NewGinEngine(gin.Default(), su, fu, au, du)
+	uu := controller.NewUpdateUserController(usecase.NewUpdateUser(c.db))
+	c.router = router.NewGinEngine(gin.Default(), su, fu, au, du, uu)
 	return c
 }
 

@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"projeto-final/core/repository"
-	"strconv"
 )
 
 type (
@@ -21,7 +20,7 @@ func NewDeleteUser(repo repository.UserRepository) DeleteUser {
 
 func (uc *deleteUser) Execute(ctx *context.Context, Id int) error {
 
-	result, err := uc.repo.GetById(ctx, strconv.Itoa(Id))
+	result, err := uc.repo.GetById(ctx, Id)
 
 	if err != nil {
 		return err

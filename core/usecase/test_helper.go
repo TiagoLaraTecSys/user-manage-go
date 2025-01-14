@@ -24,7 +24,12 @@ func (d *databaseMock) Add(ctx *context.Context, p *domain.User) (domain.User, e
 	return args.Get(0).(domain.User), args.Error(1)
 }
 
-func (d *databaseMock) GetById(ctx *context.Context, uId string) (domain.User, error) {
+func (d *databaseMock) Update(ctx *context.Context, u *domain.User) (domain.User, error) {
+	args := d.Called()
+	return args.Get(0).(domain.User), args.Error(1)
+}
+
+func (d *databaseMock) GetById(ctx *context.Context, uId int) (domain.User, error) {
 	args := d.Called()
 	return args.Get(0).(domain.User), args.Error(1)
 }

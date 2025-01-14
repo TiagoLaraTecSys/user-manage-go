@@ -7,6 +7,7 @@ import (
 	"projeto-final/core/erros"
 	"projeto-final/core/usecase"
 	"projeto-final/core/usecase/input"
+	"strconv"
 )
 
 type FindByUserIdController struct {
@@ -26,7 +27,8 @@ func (c *FindByUserIdController) Execute(w http.ResponseWriter, r http.Request) 
 		return
 	}
 
-	i := &input.FindByIdInput{Id: userid}
+	id, _ := strconv.Atoi(userid)
+	i := &input.FindByIdInput{Id: id}
 	ctx := r.Context()
 
 	user, err := c.uc.Execute(&ctx, i)

@@ -26,13 +26,13 @@ func TestFindByIdExecute(t *testing.T) {
 	}{
 		{
 			name:     "Sucesso",
-			input:    &input.FindByIdInput{Id: "1"},
+			input:    &input.FindByIdInput{Id: 1},
 			expected: respDef,
 			err:      nil,
 		},
 		{
 			name:     "Erro",
-			input:    &input.FindByIdInput{Id: "1"},
+			input:    &input.FindByIdInput{Id: 1},
 			expected: domain.User{},
 			err:      databaseErr,
 		},
