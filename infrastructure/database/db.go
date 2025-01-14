@@ -9,6 +9,7 @@ import (
 	"projeto-final/infrastructure/database/entity"
 	"projeto-final/infrastructure/logger"
 	"strconv"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,9 +22,11 @@ type SQLConnection struct {
 var _ database.DbUser = (*SQLConnection)(nil)
 
 func NewSQLConnection(dns string) (*SQLConnection, error) {
+	time.Sleep(time.Second * 2)
 	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 
 	if err != nil {
+		logger.Error("erro ao conectar com a base: %s", err.Error())
 		return &SQLConnection{}, err
 	}
 

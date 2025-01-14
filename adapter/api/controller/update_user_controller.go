@@ -41,6 +41,12 @@ func (c *UpdateUserController) Execute(w http.ResponseWriter, r http.Request) {
 		return
 	}
 
+	requestErro := i.ValidateRequestBody()
+	if requestErro != nil {
+		handler.HandleError(w, requestErro)
+		return
+	}
+
 	ctx := r.Context()
 	id, _ := strconv.Atoi(userid)
 	u, err := c.uc.Execute(&ctx, &i, id)
