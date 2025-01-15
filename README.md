@@ -30,6 +30,7 @@ cd user-manage-go
 
 ### 2. Rodar o comando:
 ```bash
+cd docker-compose
 docker-compose up --build
 ```
 
